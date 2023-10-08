@@ -2,7 +2,8 @@ name: Deploy App to Server
 
 on:
   push:
-    - main
+    branches:
+      - main
 
 jobs:
   docker:
