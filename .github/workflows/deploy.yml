@@ -18,17 +18,8 @@ jobs:
       name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
     -
-      name: Create Docker Environment File
-      run: |
-        echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" >> $GITHUB_ENV
-        echo "DOCKERHUB_TOKEN=${{ secrets.DOCKERHUB_TOKEN }}" >> $GITHUB_ENV
-      shell: bash
-    -
       name: Login to Docker Hub
-      run: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
-      env:
-        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-        DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
     -
       name: Build and push
       uses: docker/build-push-action@v4
@@ -36,9 +27,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: $DOCKERHUB_USERNAME/cicd:latest
-      env:
-        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/cicd:latest
 
   deploy-prod:
     runs-on: ubuntu-latest
@@ -54,8 +43,6 @@ jobs:
           script: |
             docker stop restapi
             docker rm restapi
-            docker rmi $DOCKERHUB_USERNAME/cicd:latest
-            docker pull $DOCKERHUB_USERNAME/cicd:latest
-            docker run -d -p 8080:8080 -e JWT_SECRET=${{ secrets.JWT_SECRET }} -e SERVERPORT=${{ secrets.SERVERPORT }} -e DBUSER=${{ secrets.DBUSER }} -e DBPASS=${{ secrets.DBPASS }} -e DBHOST=${{ secrets.DBHOST }} -e DBPORT=${{ secrets.DBPORT }} -e DBNAME=${{ secrets.DBNAME }} --name restapi $DOCKERHUB_USERNAME/cicd:latest
-      env:
-        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+            docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/cicd:latest
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/cicd:latest
+            docker run -d -p 8080:8080 -e JWT_SECRET=${{ secrets.JWT_SECRET }} -e SERVERPORT=${{ secrets.SERVERPORT }} -e DBUSER=${{ secrets.DBUSER }} -e DBPASS=${{ secrets.DBPASS }} -e DBHOST=${{ secrets.DBHOST }} -e DBPORT=${{ secrets.DBPORT }} -e DBNAME=${{ secrets.DBNAME }} --name restapi ${{ secrets.DOCKERHUB_USERNAME }}/cicd:latest
