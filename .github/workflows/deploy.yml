@@ -45,8 +45,8 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            docker stop restapi
-            docker rm restapi
-            docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/cicd:latest
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/cicd:latest
-            docker run -d -p 8080:8080 -e SERVERPORT=${{ secrets.SERVERPORT }} -e DBUSER=${{ secrets.DBUSER }} -e DBPASS=${{ secrets.DBPASS }} -e DBHOST=${{ secrets.DBHOST }} -e DBPORT=${{ secrets.DBPORT }} -e DBNAME=${{ secrets.DBNAME }} --name restapi ${{ secrets.DOCKERHUB_USERNAME }}/cicd:latest
+            sudo docker stop restapi
+            sudo docker rm restapi
+            sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/cicd:latest
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/cicd:latest
+            sudo docker run -d -p 8080:8080 -e SERVERPORT=${{ secrets.SERVERPORT }} -e DBUSER=${{ secrets.DBUSER }} -e DBPASS=${{ secrets.DBPASS }} -e DBHOST=${{ secrets.DBHOST }} -e DBPORT=${{ secrets.DBPORT }} -e DBNAME=${{ secrets.DBNAME }} --name restapi ${{ secrets.DOCKERHUB_USERNAME }}/cicd:latest
