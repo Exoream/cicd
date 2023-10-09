@@ -1,4 +1,4 @@
-name: Deploy RestAPI to Server
+name: Deploy API to Server
 
 on:
   push:
@@ -49,4 +49,4 @@ jobs:
             docker rm restapi
             docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/cicd:latest
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/cicd:latest
-            docker run -d -p 80:80 -e SERVERPORT=${{ secrets.SERVERPORT }} -e DBUSER=${{ secrets.DBUSER }} -e DBPASS=${{ secrets.DBPASS }} -e DBHOST=${{ secrets.DBHOST }} -e DBPORT=${{ secrets.DBPORT }} -e DBNAME=${{ secrets.DBNAME }} --name restapi ${{ secrets.DOCKERHUB_USERNAME }}/cicd:latest
+            docker run -d -p 8080:8080 -e SERVERPORT=${{ secrets.SERVERPORT }} -e DBUSER=${{ secrets.DBUSER }} -e DBPASS=${{ secrets.DBPASS }} -e DBHOST=${{ secrets.DBHOST }} -e DBPORT=${{ secrets.DBPORT }} -e DBNAME=${{ secrets.DBNAME }} --name restapi ${{ secrets.DOCKERHUB_USERNAME }}/cicd:latest
